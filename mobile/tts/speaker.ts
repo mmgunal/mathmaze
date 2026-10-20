@@ -6,7 +6,6 @@
 import { Asset } from 'expo-asset';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { Directory, File, Paths } from 'expo-file-system';
-import * as ort from 'onnxruntime-react-native';
 import meta from '../assets/tts/meta.json';
 import { EMA, RATE, wav, type Ort } from './engine';
 
@@ -18,13 +17,16 @@ let engine: Promise<EMA> | null = null;
 /** Loads the three graphs once; a failed load is retried on the next call. */
 export function loadTurkishVoice() {
   engine ??= (async () => {
+    // Required here, not imported: the package installs its native binding when first loaded, and a
+    // broken binding must fall back to the system voice instead of taking the app down at launch.
+    const ort: Ort = require('onnxruntime-react-native');
     const [text, sound, decoder] = await Asset.loadAsync([
       require('../assets/tts/text.onnx'),
       require('../assets/tts/sound.onnx'),
       require('../assets/tts/decoder.onnx'),
     ]);
     const uri = (a: Asset) => a.localUri ?? a.uri;
-    return EMA.load(ort as unknown as Ort, meta, { text: uri(text), sound: uri(sound), decoder: uri(decoder) });
+    return EMA.load(ort, meta, { text: uri(text), sound: uri(sound), decoder: uri(decoder) });
   })().catch((e) => {
     engine = null;
     throw e;

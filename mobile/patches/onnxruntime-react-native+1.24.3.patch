@@ -68,3 +68,12 @@ index c362e6a..e856465 100644
        nativeInstall(jsContext.get(), jsCallInvokerHolder);
        return true;
      } catch (Exception e) {
+diff --git a/node_modules/onnxruntime-react-native/unimodule.json b/node_modules/onnxruntime-react-native/unimodule.json
+deleted file mode 100644
+--- a/node_modules/onnxruntime-react-native/unimodule.json
++++ /dev/null
+@@ -1,4 +0,0 @@
+-{
+-  "name": "onnxruntime-react-native",
+-  "platforms": ["ios", "android"]
+-}
