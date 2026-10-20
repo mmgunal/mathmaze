@@ -1,0 +1,70 @@
+diff --git a/node_modules/onnxruntime-react-native/android/build.gradle b/node_modules/onnxruntime-react-native/android/build.gradle
+index 41b4359..0860e93 100644
+--- a/node_modules/onnxruntime-react-native/android/build.gradle
++++ b/node_modules/onnxruntime-react-native/android/build.gradle
+@@ -138,7 +138,7 @@ android {
+       minifyEnabled false
+     }
+   }
+-  lintOptions {
++  lint {
+     disable 'GradleCompatible'
+   }
+   compileOptions {
+@@ -247,7 +247,7 @@ dependencies {
+     extractLibs "com.microsoft.onnxruntime:onnxruntime-android:latest.integration@aar"
+   }
+ 
+-  if (VersionNumber.parse(REACT_NATIVE_VERSION) < VersionNumber.parse("0.71")) {
++  if (REACT_NATIVE_MINOR_VERSION < 71) {
+     extractLibs "com.facebook.fbjni:fbjni:+:headers"
+     extractLibs "com.facebook.fbjni:fbjni:+"
+   }
+@@ -264,7 +264,7 @@ task extractLibs {
+       def file = it.absoluteFile
+       copy {
+         from zipTree(file)
+-        into "$buildDir/$file.name"
++        into layout.buildDirectory.dir(file.name)
+         include "**/*.h", "**/*.so"
+       }
+     }
+diff --git a/node_modules/onnxruntime-react-native/android/CMakeLists.txt b/node_modules/onnxruntime-react-native/android/CMakeLists.txt
+index 2f814e8..61ad136 100644
+--- a/node_modules/onnxruntime-react-native/android/CMakeLists.txt
++++ b/node_modules/onnxruntime-react-native/android/CMakeLists.txt
+@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.9.0)
+ set(PACKAGE_NAME "onnxruntime-react-native")
+ set(BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
+ set(CMAKE_VERBOSE_MAKEFILE ON)
+-set(CMAKE_CXX_STANDARD 17)
++set(CMAKE_CXX_STANDARD 20)
+ 
+ option(ORT_EXTENSIONS_ENABLED "Enable Ort Extensions" NO)
+ option(USE_NNAPI "Use NNAPI" YES)
+@@ -80,10 +80,10 @@ add_library(
+   ../cpp/SessionUtils.cpp
+   ../cpp/TensorUtils.cpp)
+ 
+-# Configure C++ 17
++# Configure C++ 20 (React Native 0.88 headers need it)
+ set_target_properties(
+   onnxruntimejsi
+-  PROPERTIES CXX_STANDARD 17
++  PROPERTIES CXX_STANDARD 20
+              CXX_EXTENSIONS OFF
+              POSITION_INDEPENDENT_CODE ON)
+ 
+diff --git a/node_modules/onnxruntime-react-native/android/src/main/java/ai/onnxruntime/reactnative/OnnxruntimeModule.java b/node_modules/onnxruntime-react-native/android/src/main/java/ai/onnxruntime/reactnative/OnnxruntimeModule.java
+index c362e6a..e856465 100644
+--- a/node_modules/onnxruntime-react-native/android/src/main/java/ai/onnxruntime/reactnative/OnnxruntimeModule.java
++++ b/node_modules/onnxruntime-react-native/android/src/main/java/ai/onnxruntime/reactnative/OnnxruntimeModule.java
+@@ -48,7 +48,7 @@ public class OnnxruntimeModule extends ReactContextBaseJavaModule {
+       System.loadLibrary("onnxruntimejsi");
+       JavaScriptContextHolder jsContext = getReactApplicationContext().getJavaScriptContextHolder();
+       CallInvokerHolderImpl jsCallInvokerHolder =
+-        (CallInvokerHolderImpl) getReactApplicationContext().getCatalystInstance().getJSCallInvokerHolder();
++        (CallInvokerHolderImpl) getReactApplicationContext().getJSCallInvokerHolder();
+       nativeInstall(jsContext.get(), jsCallInvokerHolder);
+       return true;
+     } catch (Exception e) {
