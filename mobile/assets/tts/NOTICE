@@ -1,0 +1,11 @@
+EMA Lightning Turkish text-to-speech, bundled for on-device use.
+
+- EMA Lightning model weights by canberkkkkkk, Apache-2.0.
+  https://huggingface.co/canberkkkkkk/ema-lightning
+- ONNX conversion (text.onnx, sound.onnx, decoder.onnx, meta.json) from ema-lightning-web, Apache-2.0.
+  https://github.com/ozcancelik/ema-lightning-web
+- tts/frontend.ts and tts/engine.ts port the text handling, chunking and frame timeline of the
+  ema-lightning Python package and ema-lightning-web (both Apache-2.0); the number reader replaces
+  normalizer-tr.
+
+See LICENSE for the Apache License 2.0. The voice is AI-generated.

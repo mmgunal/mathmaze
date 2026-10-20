@@ -1,0 +1,5 @@
+node_modules
+dist
+kitap_gorselleri
+.playwright-mcp
+dist-app

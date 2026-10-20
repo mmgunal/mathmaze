@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "Matematik Labirenti",
+    "slug": "matematik-labirenti",
+    "owner": "ebiteknoloji",
+    "version": "1.2.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#7fd3ff",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ebiteknoloji.matematiklabirenti"
+    },
+    "android": {
+      "package": "com.ebiteknoloji.matematiklabirenti",
+      "versionCode": 3,
+      "adaptiveIcon": {
+        "backgroundColor": "#7C5CFF",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      [
+        "expo-navigation-bar",
+        {
+          "hidden": true
+        }
+      ],
+      "onnxruntime-react-native",
+      "expo-audio",
+      "expo-asset"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "84bb9cdf-3a2a-4e0d-bb96-ff727865c795"
+      }
+    }
+  }
+}
